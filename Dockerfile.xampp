@@ -1,0 +1,11 @@
+# Dockerfile.xampp
+FROM php:7.4-apache
+
+# Instalar extensiones necesarias
+RUN docker-php-ext-install mysqli
+
+# Configurar el servidor
+COPY ./dist /var/www/html
+
+# Exponer el puerto
+EXPOSE 80

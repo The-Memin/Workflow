@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  gulp:
+    build:
+      context: .
+      dockerfile: Dockerfile.gulp
+    volumes:
+      - ./src:/usr/src/app/src
+      - ./dist:/usr/src/app/dist
+    working_dir: /usr/src/app
+    command: ["gulp", "watch"]
+
+  xampp:
+    build:
+      context: .
+      dockerfile: Dockerfile.xampp
+    volumes:
+      - ./dist:/var/www/html
+    ports:
+      - "8080:80"
