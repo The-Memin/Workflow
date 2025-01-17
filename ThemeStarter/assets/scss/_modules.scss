@@ -1,0 +1,46 @@
+/*
+Modules styles
+*/
+.flex-normal{
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	@include tablet{
+		flex-direction: row;
+	}
+}
+.flex-horizontal{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	overflow-x: auto;
+	justify-content: flex-start;
+	padding-bottom: 5px;
+	&::-webkit-scrollbar{
+		width: 0 !important;
+		 overflow: -moz-scrollbars-none;
+		 -ms-overflow-style: none;
+		  display: none; 
+	}
+	@include tablet{
+		justify-content: center;
+		align-items: stretch;
+		flex-wrap: nowrap;
+		overflow: visible;
+	}
+	> div{
+		flex: 0 0 auto;
+		@include tablet{
+			flex: auto;
+		}
+		&:last-child{
+			width: 1px;
+			opacity: 0;
+			@include tablet{
+				display: none;
+			}
+		}
+	}
+}

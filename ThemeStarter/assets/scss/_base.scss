@@ -1,0 +1,121 @@
+/*
+base styles
+*/
+
+/***************************
+***For widths of document
+***************************/
+.w-95{
+	width: $width-95;
+}
+.w-100{
+	width: $width-100;
+}
+/*for max widths*/
+.mxw-narrow{
+	max-width: $max-width;
+}
+.mxw-full{
+	max-width: $max-width-full;	
+}
+
+
+.flex{
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: stretch;
+	@include tablet{
+		flex-direction: row;
+	}
+}
+.flex-horizontal{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	overflow-x: auto;
+	justify-content: flex-start;
+	padding-bottom: 5px;
+	&::-webkit-scrollbar{
+		width: 0 !important;
+		 overflow: -moz-scrollbars-none;
+		 -ms-overflow-style: none;
+		  display: none; 
+	}
+	@include tablet{
+		justify-content: center;
+		align-items: stretch;
+		flex-wrap: nowrap;
+		overflow: visible;
+	}
+	> div{
+		flex: 0 0 auto;
+		@include tablet{
+			flex: auto;
+		}
+		&:last-child{
+			width: 1px;
+			opacity: 0;
+			@include tablet{
+				display: none;
+			}
+		}
+	}
+}
+.box-shadow{
+	box-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+}
+.brds{
+	border-radius: 6px;
+}
+p{
+	font-size: 0.9em;
+	margin-bottom: 20px;
+	line-height: 1.4em;
+	@include tablet{
+		font-size: 1em;
+	}
+	&:last-child{
+		margin-bottom: 0;
+	}
+	span{
+		font-weight: bold;
+	}
+}
+h1,h2,h3,h4,h5,h6{
+	text-transform: uppercase;
+	font-weight: bold;
+	line-height: 1.4em;
+}
+h1{
+	font-size: 2.3em;
+}
+h2{
+	font-size: 2em;
+}
+h3{
+	font-size: 1.7em;
+}
+h4{
+	font-size: 1.5em;
+}
+h5{
+	font-size: 1.3em;
+}
+h6{
+	font-size: 1.2em;
+}
+/***********************************
+********
+for content that is going to be absolute centered both in X and Y
+*******************************************/
+.abcc{
+	position: relative;
+	@include tablet{
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+	}
+}

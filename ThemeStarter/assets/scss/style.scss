@@ -1,0 +1,19 @@
+/*!
+    Theme Name: Starter theme
+    Theme URI: pending
+    Description: Starter theme great
+    Version: 1.0.0
+    Author: Armando Niño
+    Author URI: pending
+    Tags: Gulp
+
+    License: MIT
+    License URI: http://opensource.org/licenses/mit-license.php
+*/
+@import url('https://fonts.googleapis.com/css?family=Montserrat|Itim');
+@import 'reset';
+@import 'variables';
+@import 'mixins';
+@import 'base';
+@import 'layout/layout';
+@import 'modules';

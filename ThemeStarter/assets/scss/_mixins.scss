@@ -1,0 +1,23 @@
+@mixin tablet{
+	@media only screen and (min-width: #{$tablet} ){
+		@content;
+	}
+}
+@mixin desktop{
+	@media only screen and (min-width: #{$desktop} ){
+		@content;
+	}
+}
+@mixin clearfix{
+	&:after{
+		content:"";
+		display: table;
+		clear:both;
+	}
+}
+@mixin abcc{
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+}

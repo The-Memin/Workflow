@@ -1,21 +1,44 @@
 version: '3.8'
 
 services:
-  gulp:
-    build:
-      context: .
-      dockerfile: Dockerfile.gulp
-    volumes:
-      - ./src:/usr/src/app/src
-      - ./dist:/usr/src/app/dist
-    working_dir: /usr/src/app
-    command: ["gulp", "watch"]
-
-  xampp:
-    build:
-      context: .
-      dockerfile: Dockerfile.xampp
-    volumes:
-      - ./dist:/var/www/html
+  apache:
+    image: php:8.2-apache
+    container_name: apache_server
     ports:
       - "8080:80"
+    volumes:
+      - ./dist:/var/www/html
+      - ./config/apache.conf:/etc/apache2/sites-available/000-default.conf
+    environment:
+      - APACHE_LOG_DIR=/var/log/apache2
+    restart: always
+    depends_on:
+      - db
+    command: bash -c "docker-php-ext-install mysqli && docker-php-ext-enable mysqli && apache2-foreground"
+
+  db:
+    image: mysql:8.0
+    container_name: mysql_server
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    volumes:
+      - db_data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: rootpassword
+    depends_on:
+      - db
+
+volumes:
+  db_data:
