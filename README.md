@@ -21,7 +21,6 @@ Primero, debes levantar el contenedor Docker que contiene tu entorno de desarrol
 
 Este comando descargará y levantará los contenedores necesarios para el entorno de desarrollo. Asegúrate de que el contenedor se haya iniciado correctamente. Puedes verificarlo con:
 
-    ```bash
     docker ps
 
 2. Instalar las dependencias con npm
