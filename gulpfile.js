@@ -6,6 +6,8 @@ const uglify = require('gulp-uglify');
 const rename = require('gulp-rename');
 const browserSync = require('browser-sync').create();
 const argv = require('yargs').argv;
+const concat = require('gulp-concat');
+
 
 // Task: Create a new project
 gulp.task('create-project', async function () {
@@ -49,14 +51,35 @@ gulp.task('compile-scss', function () {
         return;
     }
 
-    const srcScssPath = path.join(__dirname, 'src', projectName, '**/*.scss');
+    const srcScssPath = path.join(__dirname,'src', projectName, 'assets', 'scss', 'style.scss'); // Archivo principal SCSS
     const destCssPath = path.join(__dirname, 'dist', projectName, 'wp-content', 'themes', projectName);
 
     return gulp.src(srcScssPath)
-        .pipe(sass().on('error', sass.logError))
-        .pipe(rename({ dirname: '.', basename: 'style', extname: '.css' }))
-        .pipe(gulp.dest(destCssPath))
-        .pipe(browserSync.stream());
+        .pipe(sass().on('error', sass.logError)) // Compila el SCSS
+        .pipe(rename({ dirname: '.', basename: 'style', extname: '.css' })) // Renombra el archivo a style.css
+        .pipe(gulp.dest(destCssPath)) // Guarda el archivo en la carpeta destino
+        .pipe(browserSync.stream()); // Refresca el navegador
+});
+
+// Tarea por defecto para compilar SCSS y observar cambios
+gulp.task('watch', function () {
+    const projectName = argv.name;
+
+    if (!projectName) {
+        console.error('❌ Error: Please specify a project name using --name');
+        return;
+    }
+
+    const scssWatchPath = path.join(__dirname, 'src', projectName,'assets', 'scss', '**/*.scss'); // Observa todos los archivos SCSS
+    const destCssPath = path.join(__dirname, 'dist', projectName, 'wp-content', 'themes', projectName);
+
+    browserSync.init({
+        server: {
+            baseDir: destCssPath,
+        },
+    });
+
+    gulp.watch(scssWatchPath, gulp.series('compile-scss'));
 });
 
 // Task: Minify JS
@@ -69,14 +92,15 @@ gulp.task('minify-js', function () {
     }
 
     const srcJsPath = path.join(__dirname, 'src', projectName, '**/*.js');
-    const destJsPath = path.join(__dirname, 'dist', projectName, 'wp-content', 'themes', projectName);
+    const destJsPath = path.join(__dirname, 'dist', projectName, 'wp-content', 'themes', projectName, 'assets', 'code', 'general');
 
     return gulp.src(srcJsPath)
-        .pipe(uglify())
-        .pipe(rename({ extname: '.js' }))
+        .pipe(concat('code.js')) // Concatenate all JS files into code.js
+        .pipe(uglify())          // Minify the concatenated file
         .pipe(gulp.dest(destJsPath))
         .pipe(browserSync.stream());
 });
+
 
 // Task: Copy PHP files
 gulp.task('copy-php', function () {
