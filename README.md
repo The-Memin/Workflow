@@ -37,7 +37,7 @@ Esto instalará todas las dependencias necesarias definidas en el archivo packag
 3. Arrancar el proyecto con Gulp
 Para un nuevo proyecto
 Si estás comenzando un nuevo proyecto, utiliza el siguiente comando para crear y servir el proyecto:
-
+   ```bash
     gulp create-and-serve --name {nombre del proyecto}
 
 Sustituye {nombre del proyecto} por el nombre que deseas para tu nuevo proyecto. Esto creará el proyecto con la configuración predeterminada y lo pondrá en marcha en el entorno.
@@ -48,6 +48,116 @@ Si ya tienes un proyecto existente, simplemente utiliza el siguiente comando par
     gulp serve --name {nombre del proyecto}
 
 Sustituye {nombre del proyecto} por el nombre del proyecto que deseas servir. Esto iniciará el proyecto en el entorno de desarrollo.
+
+
+## Solución a problemas con Enlaces Permanentes en WordPress dentro de un Contenedor con Apache y PHP
+
+Si al cambiar los enlaces permanentes en WordPress de "Simple" a "Nombre de la entrada" las páginas muestran un error 404, probablemente sea un problema con `mod_rewrite` en Apache o con el archivo `.htaccess`.
+
+### 1. Habilitar `mod_rewrite` en Apache
+
+Accede al contenedor y ejecuta:
+
+```sh
+docker exec -it <nombre-del-contenedor> bash
+```
+
+Luego, habilita `mod_rewrite`:
+
+```sh
+a2enmod rewrite
+service apache2 restart
+```
+
+### 2. Configurar Apache para permitir sobrescritura (`AllowOverride All`)
+
+Edita el archivo de configuración de Apache:
+
+```sh
+nano /etc/apache2/apache2.conf
+```
+
+Busca la sección `<Directory /var/www/>` y asegúrate de que tenga lo siguiente:
+
+```apache
+<Directory /var/www/>
+    AllowOverride All
+    Require all granted
+</Directory>
+```
+
+Guarda los cambios y reinicia Apache:
+
+```sh
+service apache2 restart
+```
+
+### 3. Verificar el archivo `.htaccess`
+
+Asegúrate de que WordPress tenga un archivo `.htaccess` en la raíz de tu instalación (`/var/www/html/`):
+
+```sh
+ls -la /var/www/html/.htaccess
+```
+
+Si no existe, créalo con este contenido:
+
+```apache
+# BEGIN WordPress
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
+# END WordPress
+```
+
+Asigna los permisos adecuados:
+
+```sh
+chown www-data:www-data /var/www/html/.htaccess
+chmod 664 /var/www/html/.htaccess
+```
+
+### 4. Reiniciar el contenedor
+
+Si hiciste cambios en Apache, reinicia el contenedor:
+
+```sh
+docker restart <nombre-del-contenedor>
+```
+
+O si usas `docker-compose`:
+
+```sh
+docker-compose restart
+```
+
+### 5. Guardar nuevamente los enlaces permanentes
+
+- Ve a **Ajustes > Enlaces permanentes** en WordPress.
+- Haz clic en "Guardar cambios" sin modificar nada.
+- Verifica si las URLs funcionan correctamente.
+
+### 6. Verificar logs de Apache si el problema persiste
+
+Si sigues teniendo problemas, revisa los logs de Apache para identificar errores:
+
+```sh
+docker logs <nombre-del-contenedor>
+```
+
+O dentro del contenedor:
+
+```sh
+tail -f /var/log/apache2/error.log
+```
+
+Con estos pasos, deberías poder solucionar los problemas de enlaces permanentes en WordPress dentro de un contenedor con Apache. 🚀
+
 
 4. Detener el contenedor
 Cuando hayas terminado de trabajar, puedes detener el contenedor con el siguiente comando:
