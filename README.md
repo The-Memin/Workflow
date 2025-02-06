@@ -113,7 +113,7 @@ RewriteBase /
 RewriteRule ^index\.php$ - [L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule . /index.php [L]
+RewriteRule . /{nombre del proyecto}/index.php [L]
 </IfModule>
 # END WordPress
 ```
