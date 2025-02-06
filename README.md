@@ -97,7 +97,9 @@ service apache2 restart
 
 ### 3. Verificar el archivo `.htaccess`
 
-Asegúrate de que WordPress tenga un archivo `.htaccess` en la raíz de tu instalación (`/var/www/html/{nombre del proyecto}`):
+Asegúrate de que WordPress tenga un archivo `.htaccess` en la raíz de la instalación de cada proyecto (`/var/www/html/{nombre del proyecto}`):
+> [!NOTE]
+> cambia {nombre del proyecto} por el nombre correspondiente de cada proyecto
 
 ```sh
 ls -la /var/www/html/{nombre del proyecto}/.htaccess
