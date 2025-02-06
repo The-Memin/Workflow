@@ -20,37 +20,40 @@ Primero, debes levantar el contenedor Docker que contiene tu entorno de desarrol
    docker-compose up -d
    ```
 Este comando descargará y levantará los contenedores necesarios para el entorno de desarrollo. Asegúrate de que el contenedor se haya iniciado correctamente. Puedes verificarlo con:
-    ```bash
+
     docker ps
-    ```
+
 2. Instalar las dependencias con npm
 Una vez que el contenedor esté corriendo, es momento de instalar las dependencias del proyecto.
 
 Navega al directorio del proyecto en tu terminal.
 
 Ejecuta el siguiente comando para instalar las dependencias de Node.js:
-    ```bash
+
     npm install
-    ```
+    
 Esto instalará todas las dependencias necesarias definidas en el archivo package.json.
 
 3. Arrancar el proyecto con Gulp
 Para un nuevo proyecto
 Si estás comenzando un nuevo proyecto, utiliza el siguiente comando para crear y servir el proyecto:
-   ```bash
+
+    ```bash
     gulp create-and-serve --name {nombre del proyecto}
     ```
 Sustituye {nombre del proyecto} por el nombre que deseas para tu nuevo proyecto. Esto creará el proyecto con la configuración predeterminada y lo pondrá en marcha en el entorno.
 
 Para un proyecto existente
 Si ya tienes un proyecto existente, simplemente utiliza el siguiente comando para servirlo:
-    ```bash
+
     gulp serve --name {nombre del proyecto}
-    ```
+    
 Sustituye {nombre del proyecto} por el nombre del proyecto que deseas servir. Esto iniciará el proyecto en el entorno de desarrollo.
 
 
-## Solución a problemas con Enlaces Permanentes en WordPress dentro de un Contenedor con Apache y PHP
+> [!IMPORTANT]
+> Es posible que tengas el siguiente problema
+# Solución a problemas con Enlaces Permanentes en WordPress dentro de un Contenedor con Apache y PHP
 
 Si al cambiar los enlaces permanentes en WordPress de "Simple" a "Nombre de la entrada" las páginas muestran un error 404, probablemente sea un problema con `mod_rewrite` en Apache o con el archivo `.htaccess`.
 
